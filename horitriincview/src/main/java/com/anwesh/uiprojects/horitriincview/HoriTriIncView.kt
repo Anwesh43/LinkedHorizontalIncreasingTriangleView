@@ -4,6 +4,7 @@ package com.anwesh.uiprojects.horitriincview
  * Created by anweshmishra on 29/08/18.
  */
 
+import android.app.Activity
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
@@ -189,6 +190,14 @@ class HoriTriIncView(ctx : Context) : View(ctx) {
             lhti.startUpdating {
                 animator.start()
             }
+        }
+    }
+
+    companion object {
+        fun create(activity : Activity) : HoriTriIncView {
+            val view : HoriTriIncView = HoriTriIncView(activity)
+            activity.setContentView(view)
+            return view
         }
     }
  }
