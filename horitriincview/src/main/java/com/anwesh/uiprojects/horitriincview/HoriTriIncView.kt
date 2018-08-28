@@ -7,11 +7,38 @@ package com.anwesh.uiprojects.horitriincview
 import android.view.View
 import android.view.MotionEvent
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
-import android.graphics.Path
+import android.graphics.*
 
 val nodes : Int = 5
+
+fun Canvas.drawHTINode(i : Int, scale : Float, paint : Paint) {
+    val w : Float = width.toFloat()
+    val h : Float = height.toFloat()
+    paint.strokeWidth = Math.min(w, h) / 60
+    paint.strokeCap = Paint.Cap.ROUND
+    paint.color = Color.parseColor("#009688")
+    val gap : Float = w / nodes
+    val sc : Float = Math.min(0.5f, Math.max(0f, scale - 0.5f)) * 2
+    val size : Float = gap / 2
+    save()
+    translate(gap * i, h/2)
+    drawLine(0f, 0f, gap * sc, 0f, paint)
+    val cy : Float = -size
+    val currY : Float = size - size * sc
+    save()
+    translate(gap/2, 0f)
+    scale(1f, 1f - 2 * (i % 2))
+    val clippedPath : Path = Path()
+    clippedPath.addRect(RectF(-size/2, cy, size/2, cy + size), Path.Direction.CW)
+    clipPath(clippedPath)
+    val path : Path = Path()
+    path.moveTo(-size/2, currY)
+    path.lineTo(size/2, currY)
+    path.lineTo(0f, currY - size)
+    drawPath(path, paint)
+    restore()
+    restore()
+}
 
 class HoriTriIncView(ctx : Context) : View(ctx) {
 
