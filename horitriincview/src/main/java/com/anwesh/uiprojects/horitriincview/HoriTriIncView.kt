@@ -23,7 +23,7 @@ fun Canvas.drawHTINode(i : Int, scale : Float, paint : Paint) {
     val size : Float = gap / 2
     save()
     translate(gap * i, h/2)
-    drawLine(0f, 0f, gap * sc, 0f, paint)
+    drawLine(0f, 0f, gap * scale, 0f, paint)
     val cy : Float = -size
     val currY : Float = size - size * sc
     save()
@@ -62,12 +62,12 @@ class HoriTriIncView(ctx : Context) : View(ctx) {
 
     data class State(var scale : Float = 0f, var prevScale : Float = 0f, var dir : Float = 0f) {
         fun update(cb : (Float) -> Unit) {
-            scale += 0.1f * this.dir
+            scale += 0.05f * this.dir
             if (Math.abs(scale - prevScale) > 1) {
                 scale = prevScale + dir
                 dir = 0f
                 prevScale = scale
-                cb(scale)
+                cb(prevScale)
             }
         }
 
@@ -178,6 +178,7 @@ class HoriTriIncView(ctx : Context) : View(ctx) {
         private val lhti : LinkedHoriTriInc = LinkedHoriTriInc(0)
 
         fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(Color.parseColor("#BDBDBD"))
             lhti.draw(canvas, paint)
             animator.animate {
                 lhti.update {i, scl ->
