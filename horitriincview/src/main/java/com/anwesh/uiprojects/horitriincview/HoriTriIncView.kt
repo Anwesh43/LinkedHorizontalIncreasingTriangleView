@@ -168,4 +168,25 @@ class HoriTriIncView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : HoriTriIncView) {
+
+        private val animator : Animator = Animator(view)
+        private val lhti : LinkedHoriTriInc = LinkedHoriTriInc(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            lhti.draw(canvas, paint)
+            animator.animate {
+                lhti.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lhti.startUpdating {
+                animator.start()
+            }
+        }
+    }
  }
